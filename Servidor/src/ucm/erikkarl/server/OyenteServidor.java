@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Clase para que el servidor interactue con un cliente. Usa un {@link Socket}
@@ -15,6 +18,8 @@ import java.util.Scanner;
  */
 public class OyenteServidor
         extends SocketRunnable {
+
+    private static Logger LOGGER = Logger.getLogger(OyenteServidor.class.getName());
 
     /**
      * Crea un {@link OyenteServidor} a partir de un {@link Socket}.
@@ -27,7 +32,7 @@ public class OyenteServidor
 
     @Override
     protected void runUsingSocket(Socket socket) throws IOException {
-        System.out.println("<" + socket + "> Connected to new client");
+        LOGGER.info("Connection accepted from " + socket.getInetAddress().getHostAddress());
 
         var in = new Scanner(socket.getInputStream(), StandardCharsets.UTF_8);
         var out = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
@@ -38,22 +43,22 @@ public class OyenteServidor
 
         if (files != null)
         {
-            System.out.println("<" + socket + "> Sending information about files...");
+            LOGGER.info("Sending information about files to " + socket.getInetAddress().getHostAddress());
 
             // Mandamos el numero de ficheros al cliente para que sepa cuantas lineas necesita leer
             out.println(files.length);
-            System.out.printf("There are %d files%n", files.length);
+
+            // Pasamos como argumento un Supplier<String> para que el mensaje solo se construya si es necesario
+            LOGGER.fine(() -> "There are " + files.length + " files");
 
             for (var f : files)
-            {
                 out.println(f.getName());
-                System.out.printf("\t%s%n", f.getName());
-            }
+            LOGGER.fine(() -> "Files: " + Arrays.toString(files));
 
             // Esperamos una señal de confirmacion del cliente para poder cerrar el canal
             var confirmation = in.nextBoolean();
             if (confirmation)
-                System.out.println("<" + socket + "> Connection finished with client");
+                LOGGER.info("Connection finished with client");
             else
                 throw new IOException("Expected a 'true' confirmation signal from client");
         }

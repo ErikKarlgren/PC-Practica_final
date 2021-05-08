@@ -4,12 +4,18 @@ import ucm.erikkarl.common.ServerInformation;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServerMain {
+    private static final Logger LOGGER = Logger.getLogger(ServerMain.class.getName());
+
     public static void main(String[] args) {
+        LOGGER.setLevel(Level.ALL);
         try (var serverSocket = new ServerSocket(ServerInformation.PORT))
         {
-            System.out.printf("Server >>> address: %s, port: %d%n", serverSocket.getInetAddress().getHostAddress(), serverSocket.getLocalPort());
+            LOGGER.info("Address: " + serverSocket.getInetAddress()
+                                                  .getHostAddress() + ", Port: " + serverSocket.getLocalPort());
 
             while (!Thread.currentThread().isInterrupted())
             {
