@@ -1,7 +1,10 @@
 package ucm.erikkarl.common;
 
+import ucm.erikkarl.common.logging.LoggerUtils;
+
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -11,7 +14,7 @@ import java.util.logging.Logger;
  */
 public abstract class SocketRunnable
         implements Runnable {
-    private static final Logger LOGGER = Logger.getLogger(SocketRunnable.class.getName());
+    private static final Logger LOGGER = LoggerUtils.getLoggerWithMyFormatter(SocketRunnable.class.getName());
 
     protected final Socket socket;
 
@@ -24,6 +27,7 @@ public abstract class SocketRunnable
             throw new IllegalArgumentException("Socket must be connected");
 
         this.socket = socket;
+        LoggerUtils.switchToMyFormatterWithSocket(LOGGER, socket);
     }
 
     @Override
@@ -35,7 +39,7 @@ public abstract class SocketRunnable
         }
         catch (IOException e)
         {
-            LOGGER.severe(e.toString());
+            LOGGER.log(Level.SEVERE, "Error during execution while using socket", e);
         }
     }
 

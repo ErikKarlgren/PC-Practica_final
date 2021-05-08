@@ -1,6 +1,7 @@
 package ucm.erikkarl.client;
 
 import ucm.erikkarl.common.ServerInformation;
+import ucm.erikkarl.common.logging.LoggerUtils;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,7 +9,8 @@ import java.util.logging.Logger;
 public class ClientArgumentsParser {
     private ClientArgumentsParser() {/* utility class */}
 
-    private static final Logger LOGGER = Logger.getLogger(ClientArgumentsParser.class.getName());
+    private static final Logger LOGGER = LoggerUtils.getLoggerWithMyFormatter(ClientArgumentsParser.class.getName());
+
 
     static void parse(String[] args) {
         try

@@ -1,6 +1,7 @@
 package ucm.erikkarl.server;
 
 import ucm.erikkarl.common.SocketRunnable;
+import ucm.erikkarl.common.logging.LoggerUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 public class OyenteServidor
         extends SocketRunnable {
 
-    private static final Logger LOGGER = Logger.getLogger(OyenteServidor.class.getName());
+    private static final Logger LOGGER = LoggerUtils.getLoggerWithMyFormatter(OyenteServidor.class.getName());
 
     /**
      * Crea un {@link OyenteServidor} a partir de un {@link Socket}.
@@ -31,7 +32,9 @@ public class OyenteServidor
 
     @Override
     protected void runUsingSocket(Socket socket) throws IOException {
-        LOGGER.info("Connection accepted from " + socket.getInetAddress().getHostAddress());
+        LoggerUtils.switchToMyFormatterWithSocket(LOGGER, socket);
+
+        LOGGER.info("Connection accepted from client");
 
         var in = new Scanner(socket.getInputStream(), StandardCharsets.UTF_8);
         var out = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
@@ -42,7 +45,7 @@ public class OyenteServidor
 
         if (files != null)
         {
-            LOGGER.info("Sending information about files to " + socket.getInetAddress().getHostAddress());
+            LOGGER.info("Sending information about files...");
 
             // Mandamos el numero de ficheros al cliente para que sepa cuantas lineas necesita leer
             out.println(files.length);

@@ -1,13 +1,14 @@
 package ucm.erikkarl.server;
 
 import ucm.erikkarl.common.ServerInformation;
+import ucm.erikkarl.common.logging.LoggerUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.logging.Logger;
 
 public class ServerMain {
-    private static final Logger LOGGER = Logger.getLogger(ServerMain.class.getName());
+    private static final Logger LOGGER = LoggerUtils.getLoggerWithMyFormatter(ServerMain.class.getName());
 
     public static void main(String[] args) {
         ServerArgumentsParser.parse(args);
