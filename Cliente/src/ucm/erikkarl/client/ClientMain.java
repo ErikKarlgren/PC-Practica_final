@@ -11,10 +11,10 @@ public class ClientMain {
 
         try (var socket = new Socket(ServerInformation.IP, ServerInformation.PORT))
         {
-            var oyente = new OyenteServidor(socket);
+            var oyente = new OyenteCliente(socket);
             oyente.run();
         }
-        catch (IOException  e)
+        catch (IOException e)
         {
             e.printStackTrace();
         }

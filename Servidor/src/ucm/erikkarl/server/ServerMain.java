@@ -9,12 +9,12 @@ public class ServerMain {
     public static void main(String[] args) {
         try (var serverSocket = new ServerSocket(ServerInformation.PORT))
         {
-            System.out.println("Server >>> address: " + serverSocket.getInetAddress().getHostAddress());
+            System.out.printf("Server >>> address: %s, port: %d%n", serverSocket.getInetAddress().getHostAddress(), serverSocket.getLocalPort());
 
             while (!Thread.currentThread().isInterrupted())
             {
                 var socket = serverSocket.accept();
-                var oyente = new OyenteCliente(socket);
+                var oyente = new OyenteServidor(socket);
                 new Thread(oyente).start();
             }
         }
