@@ -9,7 +9,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
 public class OyenteServidor
         extends SocketRunnable {
 
-    private static Logger LOGGER = Logger.getLogger(OyenteServidor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OyenteServidor.class.getName());
 
     /**
      * Crea un {@link OyenteServidor} a partir de un {@link Socket}.
@@ -53,7 +52,7 @@ public class OyenteServidor
 
             for (var f : files)
                 out.println(f.getName());
-            LOGGER.fine(() -> "Files: " + Arrays.toString(files));
+            LOGGER.fine(() -> "Files:\n" + Arrays.toString(Arrays.stream(files).map(File::getName).toArray()));
 
             // Esperamos una señal de confirmacion del cliente para poder cerrar el canal
             var confirmation = in.nextBoolean();

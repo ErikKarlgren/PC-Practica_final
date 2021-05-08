@@ -4,14 +4,14 @@ import ucm.erikkarl.common.ServerInformation;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ServerMain {
     private static final Logger LOGGER = Logger.getLogger(ServerMain.class.getName());
 
     public static void main(String[] args) {
-        LOGGER.setLevel(Level.ALL);
+        ServerArgumentsParser.parse(args);
+
         try (var serverSocket = new ServerSocket(ServerInformation.PORT))
         {
             LOGGER.info("Address: " + serverSocket.getInetAddress()
