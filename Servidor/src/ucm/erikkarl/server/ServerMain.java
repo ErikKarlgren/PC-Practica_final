@@ -12,7 +12,7 @@ public class ServerMain {
     public static void main(String[] args) {
         ServerArgumentsParser.parse(args);
 
-        try (var serverSocket = new ServerSocket(ServerInformation.PORT))
+        try (var serverSocket = new ServerSocket(ServerInformation.getPort()))
         {
             LOGGER.info("Address: " + serverSocket.getInetAddress()
                                                   .getHostAddress() + ", Port: " + serverSocket.getLocalPort());
@@ -26,7 +26,7 @@ public class ServerMain {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
     }
 }

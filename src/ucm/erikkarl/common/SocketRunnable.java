@@ -2,6 +2,7 @@ package ucm.erikkarl.common;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 /**
  * Object that implements the {@link Runnable} interface and uses a {@link Socket}
@@ -10,6 +11,8 @@ import java.net.Socket;
  */
 public abstract class SocketRunnable
         implements Runnable {
+    private static final Logger LOGGER = Logger.getLogger(SocketRunnable.class.getName());
+
     protected final Socket socket;
 
     protected SocketRunnable(Socket socket) {
@@ -32,8 +35,7 @@ public abstract class SocketRunnable
         }
         catch (IOException e)
         {
-            // TODO: don't use printStackTrace()
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
     }
 
