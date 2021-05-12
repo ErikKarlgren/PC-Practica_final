@@ -12,19 +12,22 @@ public class ClientArgumentsParser {
     private static final Logger LOGGER = LoggerUtils.getLoggerWithMyFormatter(ClientArgumentsParser.class.getName());
 
 
-    static void parse(String[] args) {
+    static ServerInformation parse(String[] args) {
+        var serverInfo = new ServerInformation();
+
         try
         {
+
             // Parse server's address
             if (args.length >= 1)
             {
-                ServerInformation.setAddress(args[0]);
+                serverInfo.setAddress(args[0]);
                 LOGGER.info(() -> "Server's address has been set to " + args[0]);
             }
             if (args.length >= 2)
             {
                 var newPort = Integer.parseInt(args[1]);
-                ServerInformation.setPort(newPort);
+                serverInfo.setPort(newPort);
             }
             if (args.length >= 3)
             {
@@ -40,7 +43,8 @@ public class ClientArgumentsParser {
         }
         finally
         {
-            ServerInformation.makeDataFinal();
+            serverInfo.makeDataFinal();
         }
+        return serverInfo;
     }
 }

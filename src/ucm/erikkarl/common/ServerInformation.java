@@ -1,17 +1,18 @@
 package ucm.erikkarl.common;
 
 public class ServerInformation {
-    private ServerInformation() {/* Utility class */}
+    public ServerInformation() {/* Do nothing */}
+    private static final int DEFAULT_PORT = 9991;
 
-    private static String address = "127.0.0.1";
-    private static int port = 9991;
+    private String address = "127.0.0.1";
+    private int port = DEFAULT_PORT;
 
-    private static boolean isAddressSet = false;
-    private static boolean isPortSet = false;
+    private boolean isAddressSet = false;
+    private boolean isPortSet = false;
 
-    public static String getAddress() { return address; }
+    public String getAddress() { return address; }
 
-    public static void setAddress(String newAddress) {
+    public void setAddress(String newAddress) {
         if (!isAddressSet)
         {
             address = newAddress;
@@ -21,9 +22,11 @@ public class ServerInformation {
             throw new IllegalStateException("Server address has already been set");
     }
 
-    public static int getPort() { return port; }
+    public int getPort() { return port; }
 
-    public static void setPort(int newPort) {
+    public static int getDefaultPort() { return DEFAULT_PORT; }
+
+    public void setPort(int newPort) {
         if (!isPortSet)
         {
             port = newPort;
@@ -33,7 +36,7 @@ public class ServerInformation {
             throw new IllegalStateException("Server port has already been set");
     }
 
-    public static void makeDataFinal() {
+    public void makeDataFinal() {
         isPortSet = true;
         isAddressSet = true;
     }

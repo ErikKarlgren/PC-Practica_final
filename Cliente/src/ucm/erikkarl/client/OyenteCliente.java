@@ -26,7 +26,7 @@ public class OyenteCliente
 
     @Override
     protected void runUsingSocket(Socket socket) throws IOException {
-        var stdinScanner = new Scanner(System.in, StandardCharsets.UTF_8);
+        // var stdinScanner = new Scanner(System.in, StandardCharsets.UTF_8);
         var in = new Scanner(socket.getInputStream(), StandardCharsets.UTF_8);
         var output = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
 
