@@ -42,7 +42,7 @@ public class Servidor {
             while (!Thread.currentThread().isInterrupted())
             {
                 var socket = serverSocket.accept();
-                var oyente = new OyenteServidor(socket);
+                var oyente = new OyenteACliente(socket);
                 new Thread(oyente).start();
             }
         }

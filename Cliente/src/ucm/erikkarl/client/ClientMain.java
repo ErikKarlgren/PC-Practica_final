@@ -9,7 +9,7 @@ public class ClientMain {
 
         try (var socket = new Socket(serverInfo.getAddress(), serverInfo.getPort()))
         {
-            var oyente = new OyenteCliente(socket);
+            var oyente = new OyenteAServidor(socket);
             oyente.run();
         }
         catch (IOException e)

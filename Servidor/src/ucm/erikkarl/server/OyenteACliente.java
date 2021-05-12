@@ -16,17 +16,17 @@ import java.util.logging.Logger;
  * Clase para que el servidor interactue con un cliente. Usa un {@link Socket}
  * que se cierra automaticamente al finalizar la ejecucion.
  */
-public class OyenteServidor
+public class OyenteACliente
         extends SocketRunnable {
 
-    private static final Logger LOGGER = LoggerUtils.getLoggerWithMyFormatter(OyenteServidor.class.getName());
+    private static final Logger LOGGER = LoggerUtils.getLoggerWithMyFormatter(OyenteACliente.class.getName());
 
     /**
-     * Crea un {@link OyenteServidor} a partir de un {@link Socket}.
+     * Crea un {@link OyenteACliente} a partir de un {@link Socket}.
      *
      * @param socket {@link Socket} para comunicarse con el cliente.
      */
-    protected OyenteServidor(Socket socket) {
+    protected OyenteACliente(Socket socket) {
         super(socket);
     }
 

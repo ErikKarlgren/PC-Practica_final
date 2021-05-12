@@ -12,15 +12,15 @@ import java.util.Scanner;
  * Clase para que el cliente interactue con el servidor. Usa un {@link Socket}
  * que se cierra automaticamente al finalizar la ejecucion.
  */
-public class OyenteCliente
+public class OyenteAServidor
         extends SocketRunnable {
 
     /**
-     * Crea un {@link OyenteCliente} a partir de un {@link Socket}.
+     * Crea un {@link OyenteAServidor} a partir de un {@link Socket}.
      *
      * @param socket {@link Socket} para oir al servidor.
      */
-    public OyenteCliente(Socket socket) {
+    public OyenteAServidor(Socket socket) {
         super(socket);
     }
 
