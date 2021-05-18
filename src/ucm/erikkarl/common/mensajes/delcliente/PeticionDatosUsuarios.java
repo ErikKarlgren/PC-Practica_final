@@ -17,7 +17,7 @@ public final class PeticionDatosUsuarios
 
     @Override
     public void getProcessedBy(SesionServidor sesionServidor) {
-        var datosUsuarios = sesionServidor.datosUsuarios().mapaUsuarioAEstadoConexion();
+        var datosUsuarios = sesionServidor.datosUsuarios().usuarios();
         var msg = new MandarDatosUsuarios(datosUsuarios, destiny, origin);
         sesionServidor.mandarMensajeACliente(msg);
     }

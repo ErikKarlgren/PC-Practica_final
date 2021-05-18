@@ -1,7 +1,7 @@
 package ucm.erikkarl.common.server;
 
-import java.util.Map;
 import java.util.Optional;
+import java.util.TreeSet;
 
 /**
  * Tipo abstracto de datos que contiene los datos de todos los usuarios
@@ -18,19 +18,9 @@ public interface DatosUsuarios {
     Optional<Usuario> buscarUsuario(String username);
 
     /**
-     * Busca un usuario y comprueba si esta online o no. Si el usuario no existe
-     * devuelve {@code false}.
+     * @return Copia de los {@link Usuario}s registrados en el servidor.
      *
-     * @param username Nombre de usuario
-     * @return {@code true} si el usuario existe y esta online, {@code false} en caso
-     * contrario.
      */
-    boolean usuarioEstaOnline(String username);
-
-    /**
-     * @return Mapa que indica para cada {@link Usuario} registrado en el servidor si
-     * esta online o no. Es una copia de los datos guardados en el servidor.
-     */
-    Map<Usuario, EstadoConexion> mapaUsuarioAEstadoConexion();
+    TreeSet<Usuario> usuarios();
 
 }

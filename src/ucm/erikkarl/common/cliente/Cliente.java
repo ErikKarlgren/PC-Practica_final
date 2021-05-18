@@ -1,11 +1,10 @@
 package ucm.erikkarl.common.cliente;
 
 import ucm.erikkarl.common.mensajes.delcliente.MensajeDelCliente;
-import ucm.erikkarl.common.server.EstadoConexion;
 import ucm.erikkarl.common.server.Usuario;
 
 import java.net.InetAddress;
-import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * Available operations to be executed in the client's machine.
@@ -46,5 +45,5 @@ public interface Cliente {
      * @param datos Mapa que relaciona cada usuario y sus datos con
      *              su estado de conexion.
      */
-    void mostrarDatosUsuarios(Map<Usuario, EstadoConexion> datos);
+    void mostrarDatosUsuarios(TreeSet<Usuario> datos);
 }
