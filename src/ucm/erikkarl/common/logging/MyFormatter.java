@@ -17,7 +17,7 @@ public class MyFormatter
     public MyFormatter(Socket socket) {
         Objects.requireNonNull(socket);
         if (socket.isClosed())
-            throw new IllegalArgumentException("Socket cannot be closed");
+            throw new IllegalArgumentException("Socket must not be closed");
         else if (!socket.isBound())
             throw new IllegalArgumentException("Socket must be bound to an address");
         else if (!socket.isConnected())
