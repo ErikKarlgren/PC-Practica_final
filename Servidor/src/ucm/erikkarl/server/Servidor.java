@@ -63,7 +63,7 @@ public class Servidor {
             {
                 var socket = serverSocket.accept();
                 var nuevaSesion = new SesionDelCliente(this, socket);
-                new Thread(nuevaSesion).start();
+                new Thread(nuevaSesion, "sesion-" + socket).start();
             }
         }
         catch (IOException e)

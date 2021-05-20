@@ -37,8 +37,8 @@ public class OyenteAServidor
 
     @Override
     protected void runUsingSocket(ObjectInputStream in, ObjectOutputStream out) throws InterruptedException {
-        var emisorThread = new Thread(new Emisor(cliente, queue, out, socket));
-        var receptorThread = new Thread(new Receptor(cliente, in, socket));
+        var emisorThread = new Thread(new Emisor(cliente, queue, out, socket), "emisor");
+        var receptorThread = new Thread(new Receptor(cliente, in, socket), "receptor");
 
         LOGGER.info("Starting emitter thread");
         emisorThread.start();

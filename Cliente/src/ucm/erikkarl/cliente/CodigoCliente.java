@@ -58,7 +58,7 @@ public class CodigoCliente
     public static void main(String[] args) {
         try
         {
-            FlexibleHandler.setHandlerMode(FlexibleHandler.LoggingHandlerMode.CONSOLE);
+            FlexibleHandler.setHandlerMode(FlexibleHandler.LoggingHandlerMode.FILE);
             var serverInfo = ClientArgumentsParser.parse(args);
             var cliente = new CodigoCliente(serverInfo);
             cliente.run();
@@ -82,8 +82,8 @@ public class CodigoCliente
     }
 
     public void run() throws InterruptedException {
-        var oyenteThread = new Thread(new OyenteAServidor(this, socketToServer, messagesForServer));
-        var cliThread = new Thread(cli);
+        var oyenteThread = new Thread(new OyenteAServidor(this, socketToServer, messagesForServer), "oyente");
+        var cliThread = new Thread(cli, "command line interface");
 
         cliThread.start();
         oyenteThread.start();
