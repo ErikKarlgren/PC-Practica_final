@@ -13,7 +13,7 @@ public interface SesionServidor {
      *
      * @return {@link InetAddress} con direccion IP del servidor.
      */
-    InetAddress ip();
+    String ip();
 
     /**
      * Devuelve el puerto usado por el servidor
@@ -54,6 +54,11 @@ public interface SesionServidor {
     void cerrarConexion();
 
     /**
+     * @return Indica si la conexion sigue abierta ({@code true}) o no.
+     */
+    boolean conexionAbierta();
+
+    /**
      * @return Devuelve el {@link Usuario} que inicio sesion con esta instancia de
      * {@link SesionServidor}.
      */
@@ -66,7 +71,7 @@ public interface SesionServidor {
      * @param msg      Mensaje para mandarle al cliente
      * @param username Nombre de usuario del cliente destinatario.
      */
-    void mandarMensajeACliente(MensajeDelServidor msg, String username);
+    void mandarMensajeACliente(MensajeDelServidor msg, String username) throws UserOfflineOrDoesNotExistException;
 
     /**
      * Envia un {@link MensajeDelServidor} al usuario con el que hemos

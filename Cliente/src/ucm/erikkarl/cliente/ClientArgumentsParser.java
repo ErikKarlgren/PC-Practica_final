@@ -1,23 +1,21 @@
-package ucm.erikkarl.client;
+package ucm.erikkarl.cliente;
 
 import ucm.erikkarl.common.ServerInformation;
-import ucm.erikkarl.common.logging.LoggerUtils;
+import ucm.erikkarl.common.logging.SocketReadyLogger;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ClientArgumentsParser {
+    private static final Logger LOGGER = SocketReadyLogger.create(ClientArgumentsParser.class.getName());
+
     private ClientArgumentsParser() {/* utility class */}
-
-    private static final Logger LOGGER = LoggerUtils.getLoggerWithMyFormatter(ClientArgumentsParser.class.getName());
-
 
     static ServerInformation parse(String[] args) {
         var serverInfo = new ServerInformation();
 
         try
         {
-
             // Parse server's address
             if (args.length >= 1)
             {

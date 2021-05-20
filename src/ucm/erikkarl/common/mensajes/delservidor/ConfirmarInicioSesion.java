@@ -20,5 +20,6 @@ public final class ConfirmarInicioSesion
     @Override
     public void getProcessedBy(Cliente cliente) {
         cliente.confirmarInicioSesion(inicioSesionConExito);
+        cliente.mostrarTextoPorConsola("User was connected to server");
     }
 }

@@ -11,7 +11,7 @@ import ucm.erikkarl.common.server.SesionServidor;
 public final class PeticionDatosUsuarios
         extends MensajeDelCliente {
 
-    protected PeticionDatosUsuarios(String origin, String destiny) {
+    public PeticionDatosUsuarios(String origin, String destiny) {
         super(TipoMensaje.PETICION_LISTA_USUARIOS, origin, destiny);
     }
 

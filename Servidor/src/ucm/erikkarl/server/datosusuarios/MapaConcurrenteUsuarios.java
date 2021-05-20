@@ -5,10 +5,7 @@ import ucm.erikkarl.common.server.DatosUsuarios;
 import ucm.erikkarl.common.server.SesionServidor;
 import ucm.erikkarl.common.server.Usuario;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MapaConcurrenteUsuarios
@@ -94,11 +91,25 @@ public class MapaConcurrenteUsuarios
     public TreeSet<Usuario> usuarios() {
         controller.requestRead();
         var entries = new TreeSet<>(uidToUserEntry.values());
-        var sortedUsers = entries.stream()
-                                 .map(EntradaUsuario::usuario)
-                                 .collect(Collectors.toCollection(TreeSet::new));
+        var sortedUsers = entries.stream().map(EntradaUsuario::usuario).collect(Collectors.toCollection(TreeSet::new));
         controller.releaseRead();
         return sortedUsers;
+    }
+
+    @Override
+    public boolean setSesionDelUsuario(String username, SesionServidor sesion) {
+        boolean exito;
+        controller.requestWrite();
+        var entrada = uidToUserEntry.get(Objects.requireNonNull(username));
+        if (entrada == null)
+            exito = false;
+        else
+        {
+            entrada.setSesion(sesion);
+            exito = true;
+        }
+        controller.releaseWrite();
+        return exito;
     }
 
     @Override

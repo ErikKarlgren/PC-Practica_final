@@ -21,5 +21,4 @@ public interface Mensaje
      * @return Direccion IP de destino del mensaje
      */
     String destiny();
-
 }

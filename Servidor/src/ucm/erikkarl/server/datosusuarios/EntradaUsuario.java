@@ -16,10 +16,9 @@ import java.util.logging.Logger;
 class EntradaUsuario {
 
     private static final Logger LOGGER = SocketReadyLogger.create(EntradaUsuario.class.getName());
-
+    private final ReaderWriterController controller;
     private Usuario usuario;
     private SesionServidor sesion;
-    private final ReaderWriterController controller;
 
     public EntradaUsuario(Usuario usuario) {
         this.usuario = Objects.requireNonNull(usuario);

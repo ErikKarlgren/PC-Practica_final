@@ -1,10 +1,8 @@
 package ucm.erikkarl.common.cliente;
 
 import ucm.erikkarl.common.mensajes.delcliente.MensajeDelCliente;
-import ucm.erikkarl.common.server.Usuario;
 
 import java.net.InetAddress;
-import java.util.TreeSet;
 
 /**
  * Available operations to be executed in the client's machine.
@@ -18,7 +16,12 @@ public interface Cliente {
     /**
      * @return {@link InetAddress} con la direccion IP del usuario.
      */
-    InetAddress ip();
+    String ip();
+
+    /**
+     * @return {@link InetAddress} con la direccion IP del servidor
+     */
+    String serverIP();
 
     /**
      * Añade un {@link MensajeDelCliente} a una cola de espera para
@@ -39,11 +42,28 @@ public interface Cliente {
     void confirmarCierreSesion(boolean confirmado);
 
     /**
-     * Muestra por consola los usuarios registrados en el servidor,
-     * los ficheros que tienen disponibles y su estado de conexion.
+     * Manda un string para ser mostrado por consola.
      *
-     * @param datos Mapa que relaciona cada usuario y sus datos con
-     *              su estado de conexion.
+     * @param texto String que mostrar por consola.
      */
-    void mostrarDatosUsuarios(TreeSet<Usuario> datos);
+    void mostrarTextoPorConsola(String texto);
+
+    /**
+     * @return {@code true} si el cliente esta conectado al servidor,
+     * {@code false} en caso contrario.
+     */
+    boolean isConnectedToServer();
+
+    /**
+     * @return {@code false} si la conexion al servidor ha sido cerrada,
+     * {@code true} en caso contrario.
+     */
+    boolean connectionToServerHasNotBeenClosed();
+
+    /**
+     * Establece el nombre de usuario del cliente.
+     *
+     * @param username Nombre de usuario del cliente
+     */
+    void setUsername(String username);
 }

@@ -73,6 +73,17 @@ public interface DatosUsuarios {
     TreeSet<Usuario> usuarios();
 
     /**
+     * Busca un usuario dado un nombre y actualiza su correspondiente sesion
+     * del servidor.
+     *
+     * @param username nombre de usuario
+     * @param sesion   Nueva sesion del cliente
+     * @return {@code true} si se encuentra el usuario y se puede actualizar su sesion, y
+     * {@code false} en caso contrario.
+     */
+    boolean setSesionDelUsuario(String username, SesionServidor sesion);
+
+    /**
      * Busca la sesion correspondiente a un usuario dado su nombre si
      * es que este esta conectado y registrado en el servidor.
      *

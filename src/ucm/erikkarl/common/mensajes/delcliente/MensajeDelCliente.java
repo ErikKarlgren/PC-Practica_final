@@ -10,10 +10,9 @@ import ucm.erikkarl.common.server.SesionServidor;
 public abstract class MensajeDelCliente
         implements Mensaje {
 
-    private final TipoMensaje type;
-
     protected final String origin;
     protected final String destiny;
+    private final TipoMensaje type;
 
     protected MensajeDelCliente(TipoMensaje type, String origin, String destiny) {
         this.origin = origin;
@@ -41,6 +40,7 @@ public abstract class MensajeDelCliente
 
     /**
      * El mensaje es procesado por el {@link SesionServidor}.
+     *
      * @param sesionServidor {@link SesionServidor} que procesa el mensaje
      */
     public abstract void getProcessedBy(SesionServidor sesionServidor);

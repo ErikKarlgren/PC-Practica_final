@@ -5,27 +5,15 @@ import java.util.logging.*;
 
 /**
  * Handler that switches between working as a {@link FileHandler} and
- * as a {@link ConsoleHandler} on demand by using {@link FlexibleHandler#setLoggingMode(LoggingHandlerMode)}.
+ * as a {@link ConsoleHandler} on demand by using {@link FlexibleHandler#setHandlerMode(LoggingHandlerMode)}.
  * This handler uses the formatter {@link MyFormatter}.
  */
 public class FlexibleHandler
         extends Handler {
 
-    public enum LoggingHandlerMode {CONSOLE, FILE}
-
-    /**
-     * Sets all instances of {@link FlexibleHandler} to use the given {@link LoggingHandlerMode}.
-     *
-     * @param m New mode for all handlers of this class.
-     */
-    public static void setLoggingMode(LoggingHandlerMode m) {
-        mode = m;
-    }
-
     private static LoggingHandlerMode mode;
     private final Handler fileHandler;
     private final Handler consoleHandler;
-
     public FlexibleHandler() {
         var myFormatter = new MyFormatter();
 
@@ -34,6 +22,15 @@ public class FlexibleHandler
 
         fileHandler = tryToCreateFileHandler();
         fileHandler.setFormatter(myFormatter);
+    }
+
+    /**
+     * Sets all instances of {@link FlexibleHandler} to use the given {@link LoggingHandlerMode}.
+     *
+     * @param m New mode for all handlers of this class.
+     */
+    public static void setHandlerMode(LoggingHandlerMode m) {
+        mode = m;
     }
 
     @Override
@@ -60,11 +57,11 @@ public class FlexibleHandler
     }
 
     @Override
-    public void publish(LogRecord record) {
+    public void publish(LogRecord logRecord) {
         switch (mode)
         {
-            case CONSOLE -> consoleHandler.publish(record);
-            case FILE -> fileHandler.publish(record);
+            case CONSOLE -> consoleHandler.publish(logRecord);
+            case FILE -> fileHandler.publish(logRecord);
         }
     }
 
@@ -82,4 +79,6 @@ public class FlexibleHandler
         consoleHandler.close();
         fileHandler.close();
     }
+
+    public enum LoggingHandlerMode {CONSOLE, FILE}
 }

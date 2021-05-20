@@ -13,15 +13,24 @@ import java.util.TreeSet;
  */
 public final class MandarDatosUsuarios
         extends MensajeDelServidor {
-    private final TreeSet<Usuario> users;
+    private final TreeSet<Usuario> usuarios;
 
     public MandarDatosUsuarios(TreeSet<Usuario> users, String origin, String destiny) {
         super(TipoMensaje.MANDAR_LISTA_USUARIOS, origin, destiny);
-        this.users = users;
+        this.usuarios = users;
     }
 
     @Override
     public void getProcessedBy(Cliente cliente) {
-        cliente.mostrarDatosUsuarios(users);
+        var sb = new StringBuilder();
+
+        for (var usu : usuarios)
+        {
+            var header = String.format("%s [%s] - %s", usu.uid(), usu.ip(), usu.estadoConexion());
+            var filenames = usu.ficherosDisponibles().toString().substring(1, usu.ficherosDisponibles().size() - 1);
+            var line = String.format("%s: %s%n", header, filenames);
+            sb.append(line);
+        }
+        cliente.mostrarTextoPorConsola(sb.toString());
     }
 }

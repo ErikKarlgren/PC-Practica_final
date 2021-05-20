@@ -14,7 +14,7 @@ public final class PeticionInicioSesion
 
     private final Usuario usuario;
 
-    protected PeticionInicioSesion(Usuario usuario, String origin, String destiny) {
+    public PeticionInicioSesion(Usuario usuario, String origin, String destiny) {
         super(TipoMensaje.PETICION_INICIO_SESION, origin, destiny);
         this.usuario = usuario;
     }

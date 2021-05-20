@@ -38,7 +38,8 @@ public class MessagesQueue {
     }
 
     /**
-     * Gets and removes first {@link Mensaje in the queue.
+     * Gets and removes first {@link Mensaje} in the queue. Blocks current
+     * thread if no {@link Mensaje} is available.
      *
      * @return First {@link Mensaje} in the queue.
      */

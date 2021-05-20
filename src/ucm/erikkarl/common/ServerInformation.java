@@ -1,14 +1,14 @@
 package ucm.erikkarl.common;
 
 public class ServerInformation {
-    public ServerInformation() {/* Do nothing */}
     private static final int DEFAULT_PORT = 9991;
-
     private String address = "127.0.0.1";
     private int port = DEFAULT_PORT;
-
     private boolean isAddressSet = false;
     private boolean isPortSet = false;
+    public ServerInformation() {/* Do nothing */}
+
+    public static int getDefaultPort() { return DEFAULT_PORT; }
 
     public String getAddress() { return address; }
 
@@ -23,8 +23,6 @@ public class ServerInformation {
     }
 
     public int getPort() { return port; }
-
-    public static int getDefaultPort() { return DEFAULT_PORT; }
 
     public void setPort(int newPort) {
         if (!isPortSet)

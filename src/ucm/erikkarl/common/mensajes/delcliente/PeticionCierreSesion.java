@@ -11,7 +11,7 @@ import ucm.erikkarl.common.server.SesionServidor;
 public final class PeticionCierreSesion
         extends MensajeDelCliente {
 
-    protected PeticionCierreSesion(String origin, String destiny) {
+    public PeticionCierreSesion(String origin, String destiny) {
         super(TipoMensaje.PETICION_CIERRE_SESION, origin, destiny);
     }
 

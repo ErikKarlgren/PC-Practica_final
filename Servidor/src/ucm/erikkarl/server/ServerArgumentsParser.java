@@ -1,15 +1,15 @@
 package ucm.erikkarl.server;
 
-import ucm.erikkarl.common.logging.LoggerUtils;
 import ucm.erikkarl.common.logging.MyFormatter;
+import ucm.erikkarl.common.logging.SocketReadyLogger;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ServerArgumentsParser {
-    private ServerArgumentsParser() {/**/}
+    private static final Logger LOGGER = SocketReadyLogger.create(ServerArgumentsParser.class.getName());
 
-    private static final Logger LOGGER = LoggerUtils.getLoggerWithMyFormatter(ServerArgumentsParser.class.getName());
+    private ServerArgumentsParser() {/**/}
 
     static void parse(String[] args) {
         try

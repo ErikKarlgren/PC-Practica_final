@@ -11,12 +11,12 @@ import java.util.List;
  * de los ficheros disponibles al igual que su estado de conexion.
  */
 public class Usuario
-        implements Serializable {
+        implements Serializable, Comparable<Usuario> {
 
-    private final String uid;
-    private String ip;
-    private List<String> ficherosDisponibles;
-    private EstadoConexion estadoConexion;
+    protected final String uid;
+    protected String ip;
+    protected LinkedList<String> ficherosDisponibles;
+    protected EstadoConexion estadoConexion;
 
     /**
      * Crea un {@link Usuario} dado un nombre de usuario, una IP y su estado de conexion.
@@ -31,6 +31,18 @@ public class Usuario
         this.ip = ip;
         this.ficherosDisponibles = new LinkedList<>();
         this.estadoConexion = estadoConexion;
+    }
+
+    /**
+     * Crea una copia de otro {@link Usuario}
+     *
+     * @param usuario {@link Usuario} del que se va a hacer una copia
+     */
+    public Usuario(Usuario usuario) {
+        this.uid = usuario.uid;
+        this.ip = usuario.ip;
+        this.ficherosDisponibles = new LinkedList<>(usuario.ficherosDisponibles);
+        this.estadoConexion = usuario.estadoConexion;
     }
 
     /**
@@ -60,7 +72,7 @@ public class Usuario
      * @param ficherosDisponibles Nueva lista de ficheros disponibles
      */
     public void setFicherosDisponibles(List<String> ficherosDisponibles) {
-        this.ficherosDisponibles = ficherosDisponibles;
+        this.ficherosDisponibles = new LinkedList<>(ficherosDisponibles);
     }
 
     /**
@@ -75,6 +87,10 @@ public class Usuario
         this.estadoConexion = estadoConexion;
     }
 
+    /**
+     * @param obj Objeto con el que comparar
+     * @return {@code true} si obj es instancia de {@link Usuario} y tiene el mismo {@link Usuario#uid}.
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Usuario)
@@ -89,5 +105,13 @@ public class Usuario
     @Override
     public int hashCode() {
         return uid.hashCode();
+    }
+
+    @Override
+    public int compareTo(Usuario o) {
+        if (o == null)
+            return -1;
+        else
+            return this.uid.compareTo(o.uid);
     }
 }
