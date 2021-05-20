@@ -41,5 +41,10 @@ public class Receptor
         {
             LOGGER.log(Level.SEVERE, "Error during connection to server", e);
         }
+
+        finally
+        {
+            LOGGER.info("Receiver thread has finished");
+        }
     }
 }

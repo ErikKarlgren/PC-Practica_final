@@ -39,6 +39,11 @@ public class Emisor
                 out.writeObject(msg);
             }
         }
+        catch (InterruptedException e)
+        {
+            LOGGER.log(Level.WARNING, "Thread was interrupted", e);
+            Thread.currentThread().interrupt();
+        }
         catch (IOException e)
         {
             LOGGER.log(Level.SEVERE, "Error during connection to client", e);

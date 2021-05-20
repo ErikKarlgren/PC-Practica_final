@@ -43,12 +43,12 @@ public class MessagesQueue {
      *
      * @return First {@link Mensaje} in the queue.
      */
-    public Mensaje poll() {
+    public Mensaje poll() throws InterruptedException {
         Mensaje msg;
 
         lock.lock();
         while (queue.isEmpty())
-            full.awaitUninterruptibly();
+            full.await();
         msg = queue.poll();
         lock.unlock();
 

@@ -27,9 +27,10 @@ public class CodigoCliente
     private InetAddress localAddress;
     private Socket socketToServer;
     private volatile boolean connectedToServer = false;
+    private volatile boolean closeConnectionToServer = false;
+
     // private DownloadManager
     // private UploadManager
-    private volatile boolean closeConnectionToServer = false;
 
     public CodigoCliente(ServerInformation serverInfo) {
         this.serverInfo = serverInfo;
@@ -118,7 +119,10 @@ public class CodigoCliente
         if (!confirmado)
             throw new IllegalStateException("Could not log in");
         else
+        {
             this.connectedToServer = true;
+            this.closeConnectionToServer = false;
+        }
     }
 
     @Override
@@ -126,7 +130,10 @@ public class CodigoCliente
         if (!confirmado)
             throw new IllegalStateException("Could not log out");
         else
+        {
             this.closeConnectionToServer = true;
+            this.connectedToServer = false;
+        }
     }
 
     @Override

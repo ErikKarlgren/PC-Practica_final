@@ -40,8 +40,10 @@ public class OyenteACliente
         LOGGER.info("Starting receiver thread");
         receptorThread.start();
 
-        emisorThread.join();
         receptorThread.join();
+        // Interrumpimos el hilo porque si no se queda bloqueado leyendo de la cola de mensajes
+        emisorThread.interrupt();
+        emisorThread.join();
         LOGGER.info("Both the emitter and the receiver threads have finished");
     }
 }

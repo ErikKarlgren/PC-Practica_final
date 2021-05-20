@@ -32,7 +32,7 @@ public class SesionDelCliente
     public void run() {
         var oyenteACliente = new OyenteACliente(this, socket, queue);
         oyenteACliente.run();
-        LOGGER.info("Finished connetion to client");
+        LOGGER.info("Finished connection to client");
     }
 
     @Override
@@ -68,6 +68,7 @@ public class SesionDelCliente
         else
         {
             exito = true;
+            usuario.setEstadoConexion(EstadoConexion.ONLINE);
             usuarioActual = usuario;
             servidor.datosUsuarios().put(usuario);
             if (!servidor.datosUsuarios().setSesionDelUsuario(usuario.uid(), this))

@@ -44,5 +44,14 @@ public class Emisor
         {
             LOGGER.log(Level.SEVERE, "Error during connection to server", e);
         }
+        catch (InterruptedException e)
+        {
+            LOGGER.log(Level.WARNING, "Thread was interrupted", e);
+            Thread.currentThread().interrupt();
+        }
+        finally
+        {
+            LOGGER.info("Emitter thread has finished");
+        }
     }
 }

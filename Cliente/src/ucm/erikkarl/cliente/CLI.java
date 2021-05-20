@@ -1,7 +1,9 @@
 package ucm.erikkarl.cliente;
 
+import ucm.erikkarl.common.cliente.Cliente;
 import ucm.erikkarl.common.logging.SocketReadyLogger;
 import ucm.erikkarl.common.mensajes.delcliente.PeticionCierreSesion;
+import ucm.erikkarl.common.mensajes.delcliente.PeticionDatosUsuarios;
 import ucm.erikkarl.common.mensajes.delcliente.PeticionInicioSesion;
 import ucm.erikkarl.common.server.EstadoConexion;
 import ucm.erikkarl.common.server.Usuario;
@@ -24,10 +26,10 @@ public class CLI
     private final Scanner in;
     private final PrintStream out;
     private final Semaphore waiting;
-    private final CodigoCliente cliente;
+    private final Cliente cliente;
     private final LocalFilesManager filesManager;
 
-    public CLI(CodigoCliente cliente, InputStream in, OutputStream out, LocalFilesManager filesManager) {
+    public CLI(Cliente cliente, InputStream in, OutputStream out, LocalFilesManager filesManager) {
         this.in = new Scanner(in);
         this.out = new PrintStream(out);
         this.cliente = cliente;
@@ -48,7 +50,7 @@ public class CLI
                 {
                     // TODO: añadir opciones reales
                     case "hi", "hello" -> out.println("hello dude");
-                    case "exit", "logout" -> out.println("nah");
+                    case "exit", "logout" -> logout();
                     default -> out.println(help());
                 }
             }
@@ -102,14 +104,27 @@ public class CLI
 
     /**
      * Tries to log out from the server.
-     *
-     * @return {@code true} if client logs out succesfully, {@code false} otherwise.
      */
-    private boolean logout() {
+    private void logout() {
         var msg = new PeticionCierreSesion(cliente.ip(), cliente.serverIP());
         cliente.mandarMensajeAServidor(msg);
         waitForInput();
-        return !cliente.connectionToServerHasNotBeenClosed();
+        if (!cliente.connectionToServerHasNotBeenClosed())
+            out.println("Logged out succesfully");
+        else
+        {
+            out.println("Could not log out succesfully");
+            LOGGER.severe("Could not log out succesfully");
+        }
+    }
+
+    /**
+     * Tries to get registered users data from server.
+     */
+    private void askForUsersData() {
+        var msg = new PeticionDatosUsuarios(cliente.ip(), cliente.serverIP());
+        cliente.mandarMensajeAServidor(msg);
+        waitForInput();
     }
 
     /**
@@ -127,8 +142,9 @@ public class CLI
      */
     private String help() {
         return """
-                exit: exits program
-                help: shows this menu
-                 """;
+                 hi, hello: greetings, sir!
+                 help: shows this menu
+                 exit, logout: exits program
+                """;
     }
 }

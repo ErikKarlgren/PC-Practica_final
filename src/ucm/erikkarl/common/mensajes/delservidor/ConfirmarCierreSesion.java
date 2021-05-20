@@ -20,5 +20,7 @@ public final class ConfirmarCierreSesion
     @Override
     public void getProcessedBy(Cliente cliente) {
         cliente.confirmarCierreSesion(cierreSesionConExito);
+        var word = cierreSesionConExito ? "succesful" : "unsuccesful";
+        cliente.mostrarTextoPorConsola("Logging out was " + word);
     }
 }
