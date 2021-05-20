@@ -12,15 +12,32 @@ public class FlexibleHandler
         extends Handler {
 
     private static LoggingHandlerMode mode;
+    private static final Handler FILE_HANDLER;
+
+    static
+    {
+        Handler handler;
+        try
+        {
+            handler = new FileHandler(System.getProperty("user.dir") + "/log.txt");
+        }
+        catch (IOException e)
+        {
+            handler = new ConsoleHandler();
+        }
+        FILE_HANDLER = handler;
+    }
+
     private final Handler fileHandler;
     private final Handler consoleHandler;
+
     public FlexibleHandler() {
         var myFormatter = new MyFormatter();
 
         consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(myFormatter);
 
-        fileHandler = tryToCreateFileHandler();
+        fileHandler = FILE_HANDLER;
         fileHandler.setFormatter(myFormatter);
     }
 
@@ -39,22 +56,6 @@ public class FlexibleHandler
         fileHandler.setFormatter(formatter);
     }
 
-    /**
-     * Tries to create a {@link FileHandler}. If one cannot be created due
-     * to a {@link IOException}, a {@link ConsoleHandler} is created instead.
-     *
-     * @return A {@link Handler} as described above.
-     */
-    private Handler tryToCreateFileHandler() {
-        try
-        {
-            return new FileHandler();
-        }
-        catch (IOException e)
-        {
-            return new ConsoleHandler();
-        }
-    }
 
     @Override
     public void publish(LogRecord logRecord) {
