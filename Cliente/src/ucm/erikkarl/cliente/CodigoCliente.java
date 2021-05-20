@@ -58,7 +58,7 @@ public class CodigoCliente
     public static void main(String[] args) {
         try
         {
-            FlexibleHandler.setHandlerMode(FlexibleHandler.LoggingHandlerMode.CONSOLE);
+            FlexibleHandler.setHandlerMode(FlexibleHandler.LoggingHandlerMode.FILE);
             var serverInfo = ClientArgumentsParser.parse(args);
             var cliente = new CodigoCliente(serverInfo);
             cliente.run();

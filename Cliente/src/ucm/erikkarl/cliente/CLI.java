@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
@@ -45,17 +46,8 @@ public class CLI
             login();
             out.println("Connected to server");
             while (cliente.isConnectedToServer())
-            {
-                out.print("> ");
-                switch (in.nextLine().trim())
-                {
-                    // TODO: añadir opciones reales
-                    case "hi", "hello" -> out.println("hello dude");
-                    case "users" -> askForUsersData();
-                    case "exit", "logout" -> logout();
-                    default -> out.println(help());
-                }
-            }
+                readAndExecute();
+
             out.println("Disconnected from server");
             LOGGER.info("Disconnected from server");
         }
@@ -68,6 +60,17 @@ public class CLI
         {
             out.println("Could not log into the server");
             LOGGER.log(Level.SEVERE, "Could not log into the server", e);
+        }
+    }
+
+    private void readAndExecute() {
+        out.print("> ");
+        switch (in.nextLine().trim())
+        {
+            case "hi", "hello" -> out.println("hello dude");
+            case "users" -> askForUsersData();
+            case "exit", "logout" -> logout();
+            default -> out.println(help());
         }
     }
 
