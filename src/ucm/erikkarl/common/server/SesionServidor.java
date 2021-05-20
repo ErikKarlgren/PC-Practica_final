@@ -1,5 +1,6 @@
 package ucm.erikkarl.common.server;
 
+import ucm.erikkarl.common.exceptions.UserOfflineOrDoesNotExistException;
 import ucm.erikkarl.common.mensajes.delservidor.MensajeDelServidor;
 
 import java.net.InetAddress;

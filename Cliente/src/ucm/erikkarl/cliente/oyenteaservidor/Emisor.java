@@ -33,7 +33,7 @@ public class Emisor
     public void run() {
         try
         {
-            while (cliente.connectionToServerHasNotBeenClosed())
+            while (cliente.isConnectedToServer())
             {
                 var msg = queue.poll();
                 out.writeObject(msg);

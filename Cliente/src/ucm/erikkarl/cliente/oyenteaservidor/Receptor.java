@@ -30,7 +30,7 @@ public class Receptor
     public void run() {
         try
         {
-            while (cliente.connectionToServerHasNotBeenClosed())
+            while (cliente.isConnectedToServer())
             {
                 var msg = (MensajeDelServidor) in.readObject();
                 LOGGER.info("Processing following message: " + msg);

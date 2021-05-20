@@ -1,6 +1,7 @@
 package ucm.erikkarl.cliente;
 
 import ucm.erikkarl.common.cliente.Cliente;
+import ucm.erikkarl.common.exceptions.UnsuccesfulLoginException;
 import ucm.erikkarl.common.logging.SocketReadyLogger;
 import ucm.erikkarl.common.mensajes.delcliente.PeticionCierreSesion;
 import ucm.erikkarl.common.mensajes.delcliente.PeticionDatosUsuarios;
@@ -43,13 +44,14 @@ public class CLI
         {
             login();
             out.println("Connected to server");
-            while (cliente.connectionToServerHasNotBeenClosed())
+            while (cliente.isConnectedToServer())
             {
                 out.print("> ");
-                switch (in.nextLine())
+                switch (in.nextLine().trim())
                 {
                     // TODO: añadir opciones reales
                     case "hi", "hello" -> out.println("hello dude");
+                    case "users" -> askForUsersData();
                     case "exit", "logout" -> logout();
                     default -> out.println(help());
                 }
@@ -59,9 +61,13 @@ public class CLI
         }
         catch (IOException e)
         {
-            e.printStackTrace();
-            out.println("Could not connect to server");
-            LOGGER.log(Level.SEVERE, "Could not connect to server", e);
+            out.println("Could not read available files");
+            LOGGER.log(Level.SEVERE, "Could not read available files", e);
+        }
+        catch (UnsuccesfulLoginException e)
+        {
+            out.println("Could not log into the server");
+            LOGGER.log(Level.SEVERE, "Could not log into the server", e);
         }
     }
 
@@ -87,7 +93,7 @@ public class CLI
     /**
      * Asks for a username and tries to log into the server.
      */
-    private void login() throws IOException {
+    private void login() throws IOException, UnsuccesfulLoginException {
         var name = askForUsername();
         cliente.setUsername(name);
 
@@ -99,7 +105,10 @@ public class CLI
         var msg = new PeticionInicioSesion(usuario, cliente.ip(), cliente.serverIP());
         cliente.mandarMensajeAServidor(msg);
         waitForInput();
-        LOGGER.info("Login was succesful");
+        if (cliente.isConnectedToServer())
+            LOGGER.info("Login was succesful");
+        else
+            throw new UnsuccesfulLoginException("Login was unsuccesful");
     }
 
     /**
@@ -109,7 +118,7 @@ public class CLI
         var msg = new PeticionCierreSesion(cliente.ip(), cliente.serverIP());
         cliente.mandarMensajeAServidor(msg);
         waitForInput();
-        if (!cliente.connectionToServerHasNotBeenClosed())
+        if (cliente.isConnectedToServer())
             out.println("Logged out succesfully");
         else
         {
@@ -142,9 +151,10 @@ public class CLI
      */
     private String help() {
         return """
-                 hi, hello: greetings, sir!
-                 help: shows this menu
-                 exit, logout: exits program
+                    hi, hello: greetings, sir!
+                    users: show users data
+                    help: shows this menu
+                    exit, logout: exits program
                 """;
     }
 }

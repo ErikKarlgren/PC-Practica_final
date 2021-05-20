@@ -13,7 +13,8 @@ import java.util.logging.Logger;
  * Clase que contiene un {@link ucm.erikkarl.common.server.Usuario} y se asegura de que el acceso
  * concurrente al mismo sea seguro.
  */
-class EntradaUsuario {
+class EntradaUsuario
+        implements Comparable<EntradaUsuario> {
 
     private static final Logger LOGGER = SocketReadyLogger.create(EntradaUsuario.class.getName());
     private final ReaderWriterController controller;
@@ -101,5 +102,13 @@ class EntradaUsuario {
         }
         else
             return false;
+    }
+
+    @Override
+    public int compareTo(EntradaUsuario o) {
+        if (o == null)
+            return 1;
+        else
+            return usuario.compareTo(o.usuario);
     }
 }

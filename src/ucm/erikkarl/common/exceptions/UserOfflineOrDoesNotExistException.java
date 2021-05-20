@@ -1,4 +1,4 @@
-package ucm.erikkarl.common.server;
+package ucm.erikkarl.common.exceptions;
 
 public class UserOfflineOrDoesNotExistException
         extends Exception {

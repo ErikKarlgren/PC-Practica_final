@@ -27,7 +27,7 @@ public final class MandarDatosUsuarios
         for (var usu : usuarios)
         {
             var header = String.format("%s [%s] - %s", usu.uid(), usu.ip(), usu.estadoConexion());
-            var filenames = usu.ficherosDisponibles().toString().substring(1, usu.ficherosDisponibles().size() - 1);
+            var filenames = usu.ficherosDisponibles().toString();
             var line = String.format("%s: %s%n", header, filenames);
             sb.append(line);
         }

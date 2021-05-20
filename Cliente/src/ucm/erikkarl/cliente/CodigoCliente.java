@@ -27,7 +27,6 @@ public class CodigoCliente
     private InetAddress localAddress;
     private Socket socketToServer;
     private volatile boolean connectedToServer = false;
-    private volatile boolean closeConnectionToServer = false;
 
     // private DownloadManager
     // private UploadManager
@@ -42,6 +41,7 @@ public class CodigoCliente
         {
             localAddress = InetAddress.getLocalHost();
             socketToServer = new Socket(serverInfo.getAddress(), serverInfo.getPort());
+            connectedToServer = true;
         }
         catch (UnknownHostException e)
         {
@@ -58,7 +58,7 @@ public class CodigoCliente
     public static void main(String[] args) {
         try
         {
-            FlexibleHandler.setHandlerMode(FlexibleHandler.LoggingHandlerMode.FILE);
+            FlexibleHandler.setHandlerMode(FlexibleHandler.LoggingHandlerMode.CONSOLE);
             var serverInfo = ClientArgumentsParser.parse(args);
             var cliente = new CodigoCliente(serverInfo);
             cliente.run();
@@ -117,12 +117,12 @@ public class CodigoCliente
     @Override
     public void confirmarInicioSesion(boolean confirmado) {
         if (!confirmado)
-            throw new IllegalStateException("Could not log in");
-        else
         {
-            this.connectedToServer = true;
-            this.closeConnectionToServer = false;
+            LOGGER.severe("Could not log in");
+            this.connectedToServer = false;
         }
+        else
+            this.connectedToServer = true;
     }
 
     @Override
@@ -130,10 +130,7 @@ public class CodigoCliente
         if (!confirmado)
             throw new IllegalStateException("Could not log out");
         else
-        {
-            this.closeConnectionToServer = true;
             this.connectedToServer = false;
-        }
     }
 
     @Override
@@ -144,11 +141,6 @@ public class CodigoCliente
     @Override
     public boolean isConnectedToServer() {
         return connectedToServer;
-    }
-
-    @Override
-    public boolean connectionToServerHasNotBeenClosed() {
-        return !closeConnectionToServer;
     }
 
     @Override

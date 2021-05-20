@@ -55,12 +55,6 @@ public interface Cliente {
     boolean isConnectedToServer();
 
     /**
-     * @return {@code false} si la conexion al servidor ha sido cerrada,
-     * {@code true} en caso contrario.
-     */
-    boolean connectionToServerHasNotBeenClosed();
-
-    /**
      * Establece el nombre de usuario del cliente.
      *
      * @param username Nombre de usuario del cliente

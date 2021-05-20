@@ -1,6 +1,7 @@
 package ucm.erikkarl.server.oyenteacliente;
 
 import ucm.erikkarl.common.concurrency.MessagesQueue;
+import ucm.erikkarl.common.exceptions.UserOfflineOrDoesNotExistException;
 import ucm.erikkarl.common.logging.SocketReadyLogger;
 import ucm.erikkarl.common.mensajes.delservidor.MensajeDelServidor;
 import ucm.erikkarl.common.server.*;

@@ -26,13 +26,14 @@ public class LocalFilesManager {
         if (filesFolder.exists() && !filesFolder.isDirectory())
             throw new IllegalStateException("Files folder is not a directory");
         else if (filesFolder.mkdir())
-            LOGGER.info("Files folder was created");
+            LOGGER.info(() -> "Files folder was created on: " + filesFolder);
         else
-            LOGGER.info("Files folder already existed");
+            LOGGER.info(() -> "Files folder already existed on: " + filesFolder);
     }
 
     public List<String> getDownloadableFilesNames() throws IOException {
         var files = filesFolder.listFiles(File::isFile);
+        LOGGER.fine(() -> "Available files: " + Arrays.toString(files));
         if (files == null)
             throw new IOException("Error when reading filenames: I/O error or not a directory");
 
