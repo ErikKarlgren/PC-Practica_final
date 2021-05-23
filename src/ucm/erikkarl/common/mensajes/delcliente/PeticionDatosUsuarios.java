@@ -23,7 +23,7 @@ public final class PeticionDatosUsuarios
     @Override
     public void getProcessedBy(SesionServidor sesionServidor) {
         var datosUsuarios = sesionServidor.datosUsuarios().usuarios();
-        var exito = (datosUsuarios == null);
+        var exito = (datosUsuarios != null);
         var msg = new MandarDatosUsuarios(datosUsuarios, exito, destiny, origin);
 
         if (exito)
