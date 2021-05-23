@@ -2,6 +2,7 @@ package ucm.erikkarl.server.datosusuarios;
 
 import ucm.erikkarl.common.concurrency.ReaderWriterController;
 import ucm.erikkarl.common.logging.SocketReadyLogger;
+import ucm.erikkarl.common.server.EstadoConexion;
 import ucm.erikkarl.common.server.SesionServidor;
 import ucm.erikkarl.common.server.Usuario;
 
@@ -14,8 +15,8 @@ import java.util.logging.Logger;
  * concurrente al mismo sea seguro.
  */
 class EntradaUsuario
-        implements Comparable<EntradaUsuario> {
-
+        implements Comparable<EntradaUsuario>
+{
     private static final Logger LOGGER = SocketReadyLogger.create(EntradaUsuario.class.getName());
     private final ReaderWriterController controller;
     private Usuario usuario;
@@ -41,6 +42,7 @@ class EntradaUsuario
      * Sobrescribe los datos del {@link Usuario} con otros nuevos.
      *
      * @param nuevosDatos Nuevos datos para el usuario.
+     *
      * @throws IllegalArgumentException Si el {@link Usuario#uid()} de ambos usuarios no coincide.
      */
     public void sobrescribirUsuario(Usuario nuevosDatos) {
@@ -66,12 +68,20 @@ class EntradaUsuario
      * Modifica la {@link SesionServidor} del usuario. Si es {@code null} se reconoce como un cierre de sesion.
      *
      * @param nuevaSesion Nueva sesion del usuario.
+     *
      * @throws IllegalArgumentException Si se pasa como parametro una sesion no nula distinta a la registrada en
      *                                  esta {@link EntradaUsuario}, la cual es tambien no nula.
      */
     public void setSesion(SesionServidor nuevaSesion) {
         controller.requestWrite();
-        if (sesion == nuevaSesion)
+        LOGGER.info(() -> "Setting new session to user " + usuario.uid() + ": " + nuevaSesion);
+        if (this.sesion == null && nuevaSesion == null)
+        {
+            LOGGER.warning(() -> "Trying to set null server session to offline user " + usuario.uid());
+            if (usuario.estadoConexion() == EstadoConexion.ONLINE)
+                LOGGER.warning(() -> "User is actually online but session is null");
+        }
+        else if (this.sesion == nuevaSesion)
         {
             LOGGER.warning(() -> "Trying to set same server session to user " + usuario.uid());
         }
@@ -84,6 +94,11 @@ class EntradaUsuario
         else
         {
             sesion = nuevaSesion;
+            if (sesion == null)
+                usuario.setEstadoConexion(EstadoConexion.OFFLINE);
+            else
+                usuario.setEstadoConexion(EstadoConexion.ONLINE);
+            LOGGER.info(() -> "New session was set for user " + usuario.uid() + ": " + nuevaSesion);
         }
         controller.releaseWrite();
     }
