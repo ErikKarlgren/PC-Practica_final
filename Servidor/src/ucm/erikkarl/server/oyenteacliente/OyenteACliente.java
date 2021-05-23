@@ -15,10 +15,9 @@ import java.net.Socket;
  * de vuelta al cliente.
  */
 public class OyenteACliente
-        extends Oyente {
-
+        extends Oyente
+{
     private static final SocketReadyLogger LOGGER = SocketReadyLogger.create(OyenteACliente.class.getName());
-
     private final SesionServidor sesionServidor;
     private final MessagesQueue queue;
 
@@ -31,8 +30,11 @@ public class OyenteACliente
 
     @Override
     protected void runUsingSocket(ObjectInputStream in, ObjectOutputStream out) throws InterruptedException {
-        var emisorThread = new Thread(new Emisor(sesionServidor, queue, out, socket), "emisor-" + socket);
-        var receptorThread = new Thread(new Receptor(sesionServidor, in, socket), "receptor-" + socket);
+        var emisorThreadName = "emisor-" + socket.getRemoteSocketAddress();
+        var emisorThread = new Thread(new Emisor(sesionServidor, queue, out, socket), emisorThreadName);
+
+        var receptorThreadName = "receptor-" + socket.getRemoteSocketAddress();
+        var receptorThread = new Thread(new Receptor(sesionServidor, in, socket), receptorThreadName);
 
         LOGGER.info("Starting emitter thread");
         emisorThread.start();

@@ -63,7 +63,7 @@ public class Servidor {
             {
                 var socket = serverSocket.accept();
                 var nuevaSesion = new SesionDelCliente(this, socket);
-                new Thread(nuevaSesion, "sesion-" + socket).start();
+                new Thread(nuevaSesion, "sesion-" + socket.getRemoteSocketAddress()).start();
             }
         }
         catch (IOException e)

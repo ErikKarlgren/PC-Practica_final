@@ -36,7 +36,8 @@ public class UploadManager {
      */
     public void requestUpload(String fichero) throws IOException {
         var socket = serverSocket.accept();
-        var uploaderThread = new Thread(new Uploader(socket, fichero));
+        var threadName = "uploader-" + socket.getRemoteSocketAddress();
+        var uploaderThread = new Thread(new Uploader(socket, fichero), threadName);
         uploaderThread.start();
         LOGGER.info("Upload has started");
     }

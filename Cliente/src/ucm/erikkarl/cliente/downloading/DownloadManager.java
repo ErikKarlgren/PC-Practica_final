@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 /**
  * Clase encargada de crear tareas de descarga concurrentes.
  */
-public class DownloadManager {
+public class DownloadManager
+{
     private static final Logger LOGGER = SocketReadyLogger.create(DownloadManager.class.getName());
-
     private final Cliente cliente;
 
     public DownloadManager(Cliente cliente) {this.cliente = cliente;}
@@ -26,7 +26,8 @@ public class DownloadManager {
      */
     public void requestDownload(String remoteIP, int remotePort) throws IOException {
         var socket = new Socket(remoteIP, remotePort);
-        var downloadThread = new Thread(new Downloader(cliente, socket));
+        var threadName = "downloader-" + socket.getRemoteSocketAddress();
+        var downloadThread = new Thread(new Downloader(cliente, socket), threadName);
         downloadThread.start();
         LOGGER.fine("New download task has started");
     }

@@ -14,17 +14,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CLI
-        implements Runnable {
-
+        implements Runnable
+{
     private static final Logger LOGGER = SocketReadyLogger.create(CLI.class.getName());
-
     private final Scanner in;
     private final PrintStream out;
     private final Semaphore waiting;
@@ -108,9 +106,8 @@ public class CLI
         var msg = new PeticionInicioSesion(usuario, cliente.ip(), cliente.serverIP());
         cliente.mandarMensajeAServidor(msg);
         waitForInput();
-        if (cliente.isConnectedToServer())
-            LOGGER.info("Login was succesful");
-        else
+
+        if (!cliente.isConnectedToServer())
             throw new UnsuccesfulLoginException("Login was unsuccesful");
     }
 
@@ -121,13 +118,9 @@ public class CLI
         var msg = new PeticionCierreSesion(cliente.ip(), cliente.serverIP());
         cliente.mandarMensajeAServidor(msg);
         waitForInput();
+
         if (cliente.isConnectedToServer())
-            out.println("Logged out succesfully");
-        else
-        {
-            out.println("Could not log out succesfully");
             LOGGER.severe("Could not log out succesfully");
-        }
     }
 
     /**
