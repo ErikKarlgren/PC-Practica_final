@@ -6,8 +6,8 @@ import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
 public class MyFormatter
-        extends SimpleFormatter {
-
+        extends SimpleFormatter
+{
     private final String socketInfoHeader;
 
     public MyFormatter() {
@@ -31,6 +31,7 @@ public class MyFormatter
     @Override
     public String format(LogRecord logRecord) {
         var simpleFormat = super.format(logRecord);
-        return String.format("%s%s%n", socketInfoHeader, simpleFormat);
+        var threadInfo = String.format("Current thread: %s%n", Thread.currentThread());
+        return String.format("%s%s%s%n", socketInfoHeader, threadInfo, simpleFormat);
     }
 }
