@@ -43,9 +43,9 @@ public final class MandarDatosUsuarios
         var sb = new StringBuilder();
         for (var usu : Objects.requireNonNull(usuarios))
         {
-            var header = String.format("%s [%s] - %s", usu.uid(), usu.ip(), usu.estadoConexion());
+            var header = String.format("[%s] %s (%s)", usu.ip(), usu.uid(), usu.estadoConexion());
             var filenames = usu.ficherosDisponibles().toString();
-            var line = String.format("%s: %s%n", header, filenames);
+            var line = String.format("%s%nFiles: %s%n%n", header, filenames);
             sb.append(line);
         }
         cliente.mostrarTextoPorConsola(sb.toString());
