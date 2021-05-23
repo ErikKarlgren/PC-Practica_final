@@ -32,13 +32,16 @@ public class FlexibleHandler
     private final Handler consoleHandler;
 
     public FlexibleHandler() {
+        setLevel(LoggingGlobals.LOG_LEVEL);
         var myFormatter = new MyFormatter();
 
         consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(myFormatter);
+        consoleHandler.setLevel(LoggingGlobals.LOG_LEVEL);
 
         fileHandler = FILE_HANDLER;
         fileHandler.setFormatter(myFormatter);
+        fileHandler.setLevel(LoggingGlobals.LOG_LEVEL);
     }
 
     /**
