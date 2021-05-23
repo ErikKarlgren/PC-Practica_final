@@ -60,8 +60,7 @@ public abstract class Oyente
 
     /**
      * This is the actual code to be run that uses the {@link Socket}
-     *
-     * @param in  {@link ObjectInputStream} to read from. It's expected to be socket's
+     *  @param in  {@link ObjectInputStream} to read from. It's expected to be socket's
      *            internal {@link java.io.InputStream}
      * @param out {@link ObjectOutputStream} to write to. It's expected to be socket's
      *            internal {@link java.io.OutputStream}
