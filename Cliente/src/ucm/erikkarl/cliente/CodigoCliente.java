@@ -1,6 +1,8 @@
 package ucm.erikkarl.cliente;
 
+import ucm.erikkarl.cliente.downloading.DownloadManager;
 import ucm.erikkarl.cliente.oyenteaservidor.OyenteAServidor;
+import ucm.erikkarl.cliente.uploading.UploadManager;
 import ucm.erikkarl.common.ServerInformation;
 import ucm.erikkarl.common.cliente.Cliente;
 import ucm.erikkarl.common.concurrency.MessagesQueue;
@@ -24,14 +26,14 @@ public class CodigoCliente
     private final CLI cli;
     private final LocalFilesManager filesManager;
     private String username;
-    private InetAddress localAddress;
-    private Socket socketToServer;
-    private volatile boolean connectedToServer = false;
+    private final InetAddress localAddress;
+    private final Socket socketToServer;
+    private volatile boolean connectedToServer;
 
-    // private DownloadManager
-    // private UploadManager
+    private final DownloadManager downloadManager;
+    private final UploadManager uploadManager;
 
-    public CodigoCliente(ServerInformation serverInfo) {
+    public CodigoCliente(ServerInformation serverInfo) throws IOException {
         this.serverInfo = serverInfo;
         messagesForServer = new MessagesQueue();
         filesManager = new LocalFilesManager();
@@ -42,16 +44,17 @@ public class CodigoCliente
             localAddress = InetAddress.getLocalHost();
             socketToServer = new Socket(serverInfo.getAddress(), serverInfo.getPort());
             connectedToServer = true;
+
+            downloadManager = new DownloadManager(this);
+            uploadManager = new UploadManager();
         }
         catch (UnknownHostException e)
         {
-            LOGGER.log(Level.SEVERE, "Could not set local address", e);
-            System.exit(-1);
+            throw new UnknownHostException("Could not set local address");
         }
         catch (IOException e)
         {
-            LOGGER.log(Level.SEVERE, "Error during connection to server", e);
-            System.exit(-2);
+            throw new IOException("Error during connection to server or creation of client");
         }
     }
 
@@ -146,5 +149,20 @@ public class CodigoCliente
     @Override
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public void requestUpload(String nombreFichero) throws IOException {
+        uploadManager.requestUpload(nombreFichero);
+    }
+
+    @Override
+    public void requestDownload(String remoteIP, int remotePort) throws IOException {
+        downloadManager.requestDownload(remoteIP, remotePort);
+    }
+
+    @Override
+    public int getUploadServerPort() {
+        return uploadManager.getPort();
     }
 }

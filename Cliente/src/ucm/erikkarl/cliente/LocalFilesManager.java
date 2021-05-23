@@ -17,11 +17,11 @@ public class LocalFilesManager {
 
     private static final Logger LOGGER = SocketReadyLogger.create(LocalFilesManager.class.getName());
 
-    private static final String FILES_FOLDER_NAME = "/Files";
+    public static final String FILES_FOLDER_NAME = System.getProperty("user.dir") + "/Files";
     private final File filesFolder;
 
     public LocalFilesManager() {
-        filesFolder = new File(System.getProperty("user.dir") + FILES_FOLDER_NAME);
+        filesFolder = new File(FILES_FOLDER_NAME);
 
         if (filesFolder.exists() && !filesFolder.isDirectory())
             throw new IllegalStateException("Files folder is not a directory");

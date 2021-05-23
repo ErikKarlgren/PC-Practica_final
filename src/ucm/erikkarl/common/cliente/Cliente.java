@@ -2,6 +2,7 @@ package ucm.erikkarl.common.cliente;
 
 import ucm.erikkarl.common.mensajes.delcliente.MensajeDelCliente;
 
+import java.io.IOException;
 import java.net.InetAddress;
 
 /**
@@ -60,4 +61,24 @@ public interface Cliente {
      * @param username Nombre de usuario del cliente
      */
     void setUsername(String username);
+
+    /**
+     * Pide al cliente que se prepare para mandar un fichero.
+     *
+     * @param nombreFichero Nombre del fichero
+     */
+    void requestUpload(String nombreFichero) throws IOException;
+
+    /**
+     * Pide al cliente que se prepare para descargar un fichero de otro cliente
+     *
+     * @param remoteIP   ip del cliente con el fichero
+     * @param remotePort puerto usado por el cliente con el fichero
+     */
+    void requestDownload(String remoteIP, int remotePort) throws IOException;
+
+    /**
+     * @return Port used by the client's local uploader server.
+     */
+    int getUploadServerPort();
 }

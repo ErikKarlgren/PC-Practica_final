@@ -4,6 +4,8 @@ import ucm.erikkarl.common.mensajes.Mensaje;
 import ucm.erikkarl.common.mensajes.TipoMensaje;
 import ucm.erikkarl.common.server.SesionServidor;
 
+import java.util.Objects;
+
 /**
  * Clase que representa un mensaje mandado al servidor por el cliente.
  */
@@ -15,9 +17,9 @@ public abstract class MensajeDelCliente
     private final TipoMensaje type;
 
     protected MensajeDelCliente(TipoMensaje type, String origin, String destiny) {
-        this.origin = origin;
-        this.destiny = destiny;
-        this.type = type;
+        this.origin = Objects.requireNonNull(origin);
+        this.destiny = Objects.requireNonNull(destiny);
+        this.type = Objects.requireNonNull(type);
     }
 
     /**
