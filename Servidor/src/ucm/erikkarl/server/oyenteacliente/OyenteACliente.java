@@ -47,5 +47,15 @@ public class OyenteACliente
         emisorThread.interrupt();
         emisorThread.join();
         LOGGER.info("Both the emitter and the receiver threads have finished");
+
+        finishClosingConnection();
+    }
+
+    private void finishClosingConnection() {
+        if (sesionServidor.conexionAbierta())
+        {
+            sesionServidor.cerrarSesion();
+            sesionServidor.cerrarConexion();
+        }
     }
 }
