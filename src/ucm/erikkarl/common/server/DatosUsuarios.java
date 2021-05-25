@@ -46,7 +46,9 @@ public interface DatosUsuarios {
      *
      * @param usu Nuevo usuario.
      */
-    void put(Usuario usu);
+    void putNewUser(Usuario usu);
+
+    void update(Usuario nuevosDatos);
 
     /**
      * Quita el usuario del servidor

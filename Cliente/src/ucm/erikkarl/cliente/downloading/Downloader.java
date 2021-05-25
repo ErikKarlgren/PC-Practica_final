@@ -12,10 +12,9 @@ import java.net.Socket;
 import java.util.logging.Level;
 
 public class Downloader
-        extends Oyente {
-
+        extends Oyente
+{
     private static final SocketReadyLogger LOGGER = SocketReadyLogger.create(Downloader.class.getName());
-
     private final Cliente cliente;
     private Fichero objFichero;
 
@@ -32,6 +31,7 @@ public class Downloader
         {
             objFichero = (Fichero) in.readObject();
             saveFile();
+            cliente.mostrarTextoPorConsola(objFichero.getName() + ": fin de la descarga", false);
             updateServerInfo();
         }
         catch (ClassNotFoundException e)

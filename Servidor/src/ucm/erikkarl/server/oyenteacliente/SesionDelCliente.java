@@ -71,7 +71,7 @@ public class SesionDelCliente
         {
             usuario.setEstadoConexion(EstadoConexion.ONLINE);
             usuarioActual = usuario;
-            servidor.datosUsuarios().put(usuarioActual);
+            servidor.datosUsuarios().putNewUser(usuarioActual);
             if (!servidor.datosUsuarios().setSesionDelUsuario(usuarioActual.uid(), this))
             {
                 LOGGER.severe("Could not set user's session when logging in");
@@ -114,7 +114,7 @@ public class SesionDelCliente
                 LOGGER.info("Updating user's session was succesful");
                 exito = true;
             }
-            servidor.datosUsuarios().put(usuarioActual);
+            servidor.datosUsuarios().update(usuarioActual);
         }
         return exito;
     }

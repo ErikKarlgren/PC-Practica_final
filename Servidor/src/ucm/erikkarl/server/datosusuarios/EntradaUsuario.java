@@ -48,6 +48,11 @@ class EntradaUsuario
     public void sobrescribirUsuario(Usuario nuevosDatos) {
         if (!nuevosDatos.equals(usuario))
             throw new IllegalArgumentException("Not the same user");
+        if (nuevosDatos.estadoConexion() == EstadoConexion.OFFLINE && sesion != null)
+            throw new IllegalArgumentException("User cannot be offline while it has a current session");
+        if (nuevosDatos.estadoConexion() == EstadoConexion.ONLINE && sesion == null)
+            throw new IllegalArgumentException("User cannot be online while it has no current session");
+
         controller.requestWrite();
         usuario = new Usuario(nuevosDatos);
         controller.releaseWrite();

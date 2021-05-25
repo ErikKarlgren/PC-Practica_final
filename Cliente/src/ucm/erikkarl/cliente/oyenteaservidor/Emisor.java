@@ -37,6 +37,7 @@ public class Emisor
             {
                 var msg = queue.poll();
                 out.writeObject(msg);
+                out.reset();
                 LOGGER.info("Sent the following message to server: " + msg);
             }
         }

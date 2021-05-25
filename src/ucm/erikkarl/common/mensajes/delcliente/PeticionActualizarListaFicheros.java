@@ -43,7 +43,7 @@ public class PeticionActualizarListaFicheros
         var ficheros = new LinkedList<>(usuario.ficherosDisponibles());
         ficheros.add(nuevoFichero);
         usuario.setFicherosDisponibles(ficheros);
-        sesionServidor.datosUsuarios().put(usuario);
+        sesionServidor.datosUsuarios().update(usuario);
         var msg = new ConfirmarActualizarListaFicheros(nuevoFichero, true, destiny, origin);
         LOGGER.fine(() -> "Ficheros del usuario " + usuario.uid() + " actualizados correctamente");
         sesionServidor.mandarMensajeACliente(msg);

@@ -8,7 +8,8 @@ import java.net.InetAddress;
 /**
  * Available operations to be executed in the client's machine.
  */
-public interface Cliente {
+public interface Cliente
+{
     /**
      * @return Identificador unico del usuario.
      */
@@ -48,6 +49,15 @@ public interface Cliente {
      * @param texto String que mostrar por consola.
      */
     void mostrarTextoPorConsola(String texto);
+
+    /**
+     * Manda un string para ser mostrado por consola.
+     *
+     * @param texto     String que mostrar por consola.
+     * @param wakeUpCLI Si es {@code true}, despierta al hilo de la consola.
+     *                  Si es {@code false} imprime el texto directamente.
+     */
+    void mostrarTextoPorConsola(String texto, boolean wakeUpCLI);
 
     /**
      * @return {@code true} si el cliente esta conectado al servidor,

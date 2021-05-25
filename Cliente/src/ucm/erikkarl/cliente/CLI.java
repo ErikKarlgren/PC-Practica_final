@@ -67,11 +67,26 @@ public class CLI
         out.print(BEFORE_INPUT);
         switch (in.nextLine().trim())
         {
-            case "hi", "hello" -> out.println("hello dude");
-            case "users" -> askForUsersData();
-            case "file" -> askForFile();
-            case "exit", "logout" -> logout();
-            default -> out.println(help());
+            case "hi":
+            case "hello":
+                out.println("hello dude");
+                break;
+
+            case "users":
+                askForUsersData();
+                break;
+
+            case "file":
+                askForFile();
+                break;
+
+            case "exit":
+            case "logout":
+                logout();
+                break;
+
+            default:
+                out.println(help());
         }
     }
 
@@ -92,6 +107,10 @@ public class CLI
         out.println(input);
         LOGGER.info("Woke up: input has been received and printed");
         waiting.release();
+    }
+
+    public void printWithoutWakingUp(String input) {
+        out.println(input);
     }
 
     /**
@@ -149,13 +168,7 @@ public class CLI
      * @return {@link String} with help message
      */
     private String help() {
-        return """
-                    hi, hello: greetings, sir!
-                    users: show users data
-                    file: download a file given its name and owner's name
-                    help: shows this menu
-                    exit, logout: exits program
-                """;
+        return "hi, hello: greetings, sir!\n" + "users: show users data\n" + "file: download a file given its name and owner's name\n" + "help: shows this menu\n" + "exit, logout: exits program\n";
     }
 
     private void askForFile() {

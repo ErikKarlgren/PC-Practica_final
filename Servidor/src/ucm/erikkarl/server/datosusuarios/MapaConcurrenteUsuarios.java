@@ -2,6 +2,7 @@ package ucm.erikkarl.server.datosusuarios;
 
 import ucm.erikkarl.common.concurrency.ReaderWriterController;
 import ucm.erikkarl.common.server.DatosUsuarios;
+import ucm.erikkarl.common.server.EstadoConexion;
 import ucm.erikkarl.common.server.SesionServidor;
 import ucm.erikkarl.common.server.Usuario;
 
@@ -9,8 +10,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MapaConcurrenteUsuarios
-        implements DatosUsuarios {
-
+        implements DatosUsuarios
+{
     private final TreeMap<String, EntradaUsuario> uidToUserEntry;
     private final ReaderWriterController controller;
 
@@ -57,11 +58,38 @@ public class MapaConcurrenteUsuarios
     }
 
     @Override
-    public void put(Usuario usu) {
+    public void putNewUser(Usuario usu) {
         controller.requestWrite();
-        var entrada = new EntradaUsuario(usu);
-        uidToUserEntry.put(usu.uid(), entrada);
-        controller.releaseWrite();
+
+        if (uidToUserEntry.get(usu.uid()) != null && uidToUserEntry.get(usu.uid())
+                                                                   .usuario()
+                                                                   .estadoConexion() == EstadoConexion.ONLINE)
+        {
+            controller.releaseWrite();
+            throw new IllegalArgumentException("User exists already and is currently online");
+        }
+        else
+        {
+            var entrada = new EntradaUsuario(usu);
+            uidToUserEntry.put(usu.uid(), entrada);
+            controller.releaseWrite();
+        }
+    }
+
+    @Override
+    public void update(final Usuario nuevosDatos) {
+        controller.requestRead();
+        var entrada = uidToUserEntry.get(nuevosDatos.uid());
+        if (entrada == null)
+        {
+            controller.releaseRead();
+            throw new IllegalArgumentException("User does not exist");
+        }
+        else
+        {
+            entrada.sobrescribirUsuario(nuevosDatos);
+            controller.releaseRead();
+        }
     }
 
     @Override
@@ -99,7 +127,7 @@ public class MapaConcurrenteUsuarios
     @Override
     public boolean setSesionDelUsuario(String username, SesionServidor sesion) {
         boolean exito;
-        controller.requestWrite();
+        controller.requestRead();
         var entrada = uidToUserEntry.get(Objects.requireNonNull(username));
         if (entrada == null)
             exito = false;
@@ -108,7 +136,7 @@ public class MapaConcurrenteUsuarios
             entrada.setSesion(sesion);
             exito = true;
         }
-        controller.releaseWrite();
+        controller.releaseRead();
         return exito;
     }
 

@@ -44,7 +44,7 @@ public class SendUploaderInfoToDownloader
         }
         else  // Uploader does not exist or sth else
         {
-            cliente.mostrarTextoPorConsola("Could not start download: user might not exist");
+            cliente.mostrarTextoPorConsola("Could not start download: either user or file might not exist");
             LOGGER.info("Could not start download: user might not exist");
         }
     }

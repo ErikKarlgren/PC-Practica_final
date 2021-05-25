@@ -18,8 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CodigoCliente
-        implements Cliente {
-
+        implements Cliente
+{
     private static final Logger LOGGER = SocketReadyLogger.create(CodigoCliente.class.getName());
     private final ServerInformation serverInfo;
     private final MessagesQueue messagesForServer;
@@ -29,7 +29,6 @@ public class CodigoCliente
     private final InetAddress localAddress;
     private final Socket socketToServer;
     private volatile boolean connectedToServer;
-
     private final DownloadManager downloadManager;
     private final UploadManager uploadManager;
 
@@ -138,7 +137,15 @@ public class CodigoCliente
 
     @Override
     public void mostrarTextoPorConsola(String texto) {
-        cli.printInput(texto);
+        mostrarTextoPorConsola(texto, true);
+    }
+
+    @Override
+    public void mostrarTextoPorConsola(final String texto, final boolean wakeUpCLI) {
+        if (wakeUpCLI)
+            cli.printInput(texto);
+        else
+            cli.printWithoutWakingUp(texto);
     }
 
     @Override
