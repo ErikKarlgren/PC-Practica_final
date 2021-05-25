@@ -9,8 +9,8 @@ import java.util.logging.Logger;
  * This {@link Logger} uses as {@link java.util.logging.Handler} a {@link FlexibleHandler}.
  */
 public class SocketReadyLogger
-        extends Logger {
-
+        extends Logger
+{
     private FlexibleHandler flexibleHandler;
 
     /**
@@ -35,6 +35,7 @@ public class SocketReadyLogger
      * Creates a {@link SocketReadyLogger} with a custom name.
      *
      * @param name Name of the logger
+     *
      * @return A {@link SocketReadyLogger}.
      */
     public static SocketReadyLogger create(String name) {
@@ -48,7 +49,12 @@ public class SocketReadyLogger
      * @param socket {@link Socket} to be used by the logger.
      */
     public void setSocket(Socket socket) {
-        flexibleHandler.setFormatter(new MyFormatter(socket));
+        /*
+        var formatter = new MyFormatter(socket);
+        for (var h : getHandlers())
+            h.setFormatter(formatter);
+         */
+        //flexibleHandler.setFormatter();
     }
 
     public void addHandler(FlexibleHandler handler) throws SecurityException {

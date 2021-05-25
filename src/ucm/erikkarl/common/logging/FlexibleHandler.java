@@ -1,6 +1,7 @@
 package ucm.erikkarl.common.logging;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.logging.*;
 
 /**
@@ -9,10 +10,26 @@ import java.util.logging.*;
  * This handler uses the formatter {@link MyFormatter}.
  */
 public class FlexibleHandler
-        extends Handler {
-
+        extends Handler
+{
     private static LoggingHandlerMode mode;
     private static final Handler FILE_HANDLER;
+    private static final PrintStream DEFAULT_ERR = System.err;
+    private static final PrintStream LOG_FILE;
+
+    static
+    {
+        PrintStream temp;
+        try
+        {
+            temp = new PrintStream("./log.txt");
+        }
+        catch (IOException e)
+        {
+            temp = System.err;
+        }
+        LOG_FILE = temp;
+    }
 
     static
     {
@@ -50,6 +67,13 @@ public class FlexibleHandler
      * @param m New mode for all handlers of this class.
      */
     public static void setHandlerMode(LoggingHandlerMode m) {
+        if (mode != m)
+        {
+            if (m == LoggingHandlerMode.CONSOLE)
+                System.setErr(DEFAULT_ERR);
+            else
+                System.setErr(LOG_FILE);
+        }
         mode = m;
     }
 
@@ -58,7 +82,6 @@ public class FlexibleHandler
         consoleHandler.setFormatter(formatter);
         fileHandler.setFormatter(formatter);
     }
-
 
     @Override
     public void publish(LogRecord logRecord) {
@@ -84,5 +107,6 @@ public class FlexibleHandler
         fileHandler.close();
     }
 
-    public enum LoggingHandlerMode {CONSOLE, FILE}
+    public enum LoggingHandlerMode
+    {CONSOLE, FILE}
 }
