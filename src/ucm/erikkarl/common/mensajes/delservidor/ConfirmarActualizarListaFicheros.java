@@ -24,7 +24,7 @@ public class ConfirmarActualizarListaFicheros
     public void getProcessedBy(Cliente cliente) {
         var texto = exito ? "succesful" : "unsuccesful";
         var textoFinal = "File update of " + nuevoFichero + " in server was " + texto;
-        cliente.mostrarTextoPorConsola(textoFinal);
+        //cliente.mostrarTextoPorConsola(textoFinal);
         LOGGER.log(exito ? Level.INFO : Level.SEVERE, textoFinal);
     }
 }

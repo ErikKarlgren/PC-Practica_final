@@ -5,6 +5,7 @@ import ucm.erikkarl.common.exceptions.UnsuccesfulLoginException;
 import ucm.erikkarl.common.logging.SocketReadyLogger;
 import ucm.erikkarl.common.mensajes.delcliente.PeticionCierreSesion;
 import ucm.erikkarl.common.mensajes.delcliente.PeticionDatosUsuarios;
+import ucm.erikkarl.common.mensajes.delcliente.PeticionFicheroAServidor;
 import ucm.erikkarl.common.mensajes.delcliente.PeticionInicioSesion;
 import ucm.erikkarl.common.server.EstadoConexion;
 import ucm.erikkarl.common.server.Usuario;
@@ -23,6 +24,7 @@ public class CLI
         implements Runnable
 {
     private static final Logger LOGGER = SocketReadyLogger.create(CLI.class.getName());
+    private static final String BEFORE_INPUT = "> ";
     private final Scanner in;
     private final PrintStream out;
     private final Semaphore waiting;
@@ -62,11 +64,12 @@ public class CLI
     }
 
     private void readAndExecute() {
-        out.print("> ");
+        out.print(BEFORE_INPUT);
         switch (in.nextLine().trim())
         {
             case "hi", "hello" -> out.println("hello dude");
             case "users" -> askForUsersData();
+            case "file" -> askForFile();
             case "exit", "logout" -> logout();
             default -> out.println(help());
         }
@@ -149,8 +152,23 @@ public class CLI
         return """
                     hi, hello: greetings, sir!
                     users: show users data
+                    file: download a file given its name and owner's name
                     help: shows this menu
                     exit, logout: exits program
                 """;
+    }
+
+    private void askForFile() {
+        String owner;
+        String filename;
+
+        out.print("Owner's username: ");
+        owner = in.nextLine();
+        out.print("Filename: ");
+        filename = in.nextLine();
+
+        var msg = new PeticionFicheroAServidor(cliente.ip(), cliente.serverIP(), filename, owner, cliente.uid());
+        cliente.mandarMensajeAServidor(msg);
+        waitForInput();
     }
 }

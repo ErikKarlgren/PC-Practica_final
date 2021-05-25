@@ -6,6 +6,7 @@ import ucm.erikkarl.common.mensajes.delservidor.ConfirmarActualizarListaFicheros
 import ucm.erikkarl.common.server.SesionServidor;
 import ucm.erikkarl.common.server.Usuario;
 
+import java.util.LinkedList;
 import java.util.logging.Logger;
 
 public class PeticionActualizarListaFicheros
@@ -39,7 +40,7 @@ public class PeticionActualizarListaFicheros
 
     private void actualizarFicherosDelUsuario(final SesionServidor sesionServidor, final Usuario usuario)
     {
-        var ficheros = usuario.ficherosDisponibles();
+        var ficheros = new LinkedList<>(usuario.ficherosDisponibles());
         ficheros.add(nuevoFichero);
         usuario.setFicherosDisponibles(ficheros);
         sesionServidor.datosUsuarios().put(usuario);

@@ -4,21 +4,22 @@ import ucm.erikkarl.common.concurrency.MessagesQueue;
 import ucm.erikkarl.common.exceptions.UserOfflineOrDoesNotExistException;
 import ucm.erikkarl.common.logging.SocketReadyLogger;
 import ucm.erikkarl.common.mensajes.delservidor.MensajeDelServidor;
-import ucm.erikkarl.common.server.*;
+import ucm.erikkarl.common.server.DatosUsuarios;
+import ucm.erikkarl.common.server.EstadoConexion;
+import ucm.erikkarl.common.server.SesionServidor;
+import ucm.erikkarl.common.server.Usuario;
 import ucm.erikkarl.server.Servidor;
 
 import java.net.Socket;
 import java.util.Objects;
 
 public class SesionDelCliente
-        implements SesionServidor, Runnable {
-
+        implements SesionServidor, Runnable
+{
     private static final SocketReadyLogger LOGGER = SocketReadyLogger.create(SesionDelCliente.class.getName());
-
     private final Servidor servidor;
     private final MessagesQueue queue;
     private final Socket socket;
-
     private volatile boolean closeConnection = false;
     private Usuario usuarioActual = null;
 
@@ -68,14 +69,18 @@ public class SesionDelCliente
         }
         else
         {
-            exito = true;
             usuario.setEstadoConexion(EstadoConexion.ONLINE);
             usuarioActual = usuario;
-            servidor.datosUsuarios().put(usuario);
-            if (!servidor.datosUsuarios().setSesionDelUsuario(usuario.uid(), this))
+            servidor.datosUsuarios().put(usuarioActual);
+            if (!servidor.datosUsuarios().setSesionDelUsuario(usuarioActual.uid(), this))
             {
                 LOGGER.severe("Could not set user's session when logging in");
                 exito = false;
+            }
+            else
+            {
+                LOGGER.info("New user's session was set");
+                exito = true;
             }
         }
         return exito;
@@ -98,14 +103,18 @@ public class SesionDelCliente
         }
         else
         {
-            exito = true;
             usuarioActual.setEstadoConexion(EstadoConexion.OFFLINE);
-            servidor.datosUsuarios().put(usuarioActual);
-            if (!servidor.datosUsuarios().setSesionDelUsuario(usuarioActual().uid(), null))
+            if (!servidor.datosUsuarios().setSesionDelUsuario(usuarioActual.uid(), null))
             {
                 LOGGER.severe("Could not change user's session");
                 exito = false;
             }
+            else
+            {
+                LOGGER.info("Updating user's session was succesful");
+                exito = true;
+            }
+            servidor.datosUsuarios().put(usuarioActual);
         }
         return exito;
     }
@@ -134,14 +143,14 @@ public class SesionDelCliente
             throw new UserOfflineOrDoesNotExistException();
         else
         {
-            LOGGER.info(() -> "Sending message to a diferent user (" + msg + ")");
+            LOGGER.info(() -> "Sending message to a diferent user: " + username + " (" + msg + ")");
             sesion.get().mandarMensajeACliente(Objects.requireNonNull(msg));
         }
     }
 
     @Override
     public void mandarMensajeACliente(MensajeDelServidor msg) {
-        LOGGER.info(() -> "Sending message to current user (" + msg + ")");
+        LOGGER.info(() -> "Sending message to current user: " + usuarioActual.uid() + " (" + msg + ")");
         queue.add(msg);
     }
 }

@@ -14,13 +14,17 @@ public class PeticionFicheroAServidor
         extends MensajeDelCliente
 {
     private static final Logger LOGGER = SocketReadyLogger.create(PeticionFicheroAServidor.class.getName());
-    private final String nombreFichero;
-    private final String nombreUsuario;
+    private final String filename;
+    private final String uploader;
+    private final String downloader;
 
-    public PeticionFicheroAServidor(String nombreFichero, String nombreUsuario, String origin, String destiny) {
+    public PeticionFicheroAServidor(String origin, String destiny, String filename, String uploader,
+                                    String downloader)
+    {
         super(TipoMensaje.PETICION_FICHERO_A_SERVIDOR, origin, destiny);
-        this.nombreFichero = nombreFichero;
-        this.nombreUsuario = nombreUsuario;
+        this.filename = filename;
+        this.uploader = uploader;
+        this.downloader = downloader;
     }
 
     @Override
@@ -46,8 +50,8 @@ public class PeticionFicheroAServidor
     private void mandarPeticionFicheroACliente(final SesionServidor sesionServidor)
             throws UserOfflineOrDoesNotExistException
     {
-        var msg = new PeticionFicheroACliente(origin, destiny, nombreFichero);
-        sesionServidor.mandarMensajeACliente(msg, nombreUsuario);
+        var msg = new PeticionFicheroACliente(origin, destiny, filename, downloader);
+        sesionServidor.mandarMensajeACliente(msg, uploader);
         LOGGER.fine("Petition sent to client");
     }
 }

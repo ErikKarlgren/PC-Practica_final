@@ -14,25 +14,27 @@ public class PeticionFicheroACliente
     private final String nombreFichero;
 
     private static final Logger LOGGER = SocketReadyLogger.create(PeticionFicheroACliente.class.getName());
+private final String downloader;
 
-    public PeticionFicheroACliente(String origin, String destiny, String nombreFichero) {
+    public PeticionFicheroACliente(String origin, String destiny, String nombreFichero, final String downloader) {
         super(TipoMensaje.PETICION_FICHERO_A_CLIENTE, origin, destiny);
         this.nombreFichero = nombreFichero;
+        this.downloader = downloader;
     }
 
     @Override
     public void getProcessedBy(Cliente cliente) {
         try
         {
-            cliente.requestUpload(nombreFichero);
             int port = cliente.getUploadServerPort();
-            var msg = new SendUploaderInfoToServer(cliente.uid(), port, true, origin, destiny);
+            var msg = new SendUploaderInfoToServer(downloader, port, true, origin, destiny);
             cliente.mandarMensajeAServidor(msg);
-            LOGGER.fine("Sent petition to uploader");
+            LOGGER.fine("Sending petition to uploader");
+            cliente.requestUpload(nombreFichero);
         }
         catch (IOException e)
         {
-            var msg = new SendUploaderInfoToServer(cliente.uid(), -1, false, origin, destiny);
+            var msg = new SendUploaderInfoToServer(downloader, -1, false, origin, destiny);
             cliente.mandarMensajeAServidor(msg);
             LOGGER.log(Level.SEVERE, "Error during upload request", e);
         }
